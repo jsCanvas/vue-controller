@@ -411,8 +411,8 @@ readStream.on('end',function(chunk){
     let stores4 = stores3.split('const actions = ')[1];
     let storeactions = stores4.split('export default ')[0];
     let stores5 = stores4.split('export default ')[1];
-    storelistStr = `import {commonRequest} from '@/api/controller-common'
-    `+storeone
+    storelistStr = storeone.indexOf('{commonRequest}') ==-1?`import {commonRequest} from '@/api/controller-common'
+    `:''+storeone
     + 'const state = '+storetate.slice(0,storetate.lastIndexOf('}')) + haveDou(storetate.slice(0,storetate.lastIndexOf('}')))
     +`    ${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)}:[],
 }
