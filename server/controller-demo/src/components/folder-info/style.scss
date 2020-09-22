@@ -1,0 +1,76 @@
+@import '@/styles/rule-variables.scss';
+$borderColor: rgb(235, 238, 245);
+
+.title {
+    height: 48px;
+    line-height: 48px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: normal;
+    color: #303133;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 3px;
+        height: 14px;
+        background-color: #4c7ee9;
+        vertical-align: middle;
+        margin: -2px 8px 0 0;
+    }
+}
+.right {
+    height: 48px;
+    line-height: 48px;
+    
+    .arrow-down {
+        transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg); 
+        -moz-transform: rotate(-90deg); 
+        -webkit-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+    }
+    .arrow-up {
+        transform: rotate(90deg);
+        -ms-transform: rotate(90deg); 
+        -moz-transform: rotate(90deg); 
+        -webkit-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+    }
+}
+
+.table-container {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+   color: $tableFontColor;
+
+    .row {
+        display: table-row;
+        height: 56px;
+
+        & td:nth-child(odd) {
+            background-color: $tableBgColor;
+        }
+
+        .cell {
+            display: table-cell;
+            width: 12.5%;
+            text-align: left;
+            padding-left: 16px;
+            border: 1px solid $borderColor;
+
+            .btn {
+                font-size: 14px;
+            }
+        }
+    }
+    .error-msg {
+        color: #ff6555;
+    }
+    .tooltip-item {
+        position: relative;
+        left: -60px;
+    }
+}

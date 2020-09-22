@@ -1,0 +1,20 @@
+#app{
+    .el-dialog{
+        .el-dialog__headerbtn{
+            top: 8px;
+            right: 8px;
+        }
+        .el-dialog__header{
+		    padding: 20px 24px;
+		    .el-dialog__title{
+		         color: #333;
+		    }
+		}
+		.el-dialog__body {
+			padding: 15px 24px;
+		}
+        .el-dialog__footer{
+	        padding: 14px 16px;
+	    }
+    }
+}

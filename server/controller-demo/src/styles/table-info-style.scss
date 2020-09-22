@@ -1,0 +1,59 @@
+@import '@/styles/rule-variables.scss';
+$borderColor: rgb(235, 238, 245);
+
+.table-container {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+   color: $tableFontColor;
+
+    .table-title {
+        height: 48px;
+        line-height: 48px;
+        text-align: left;
+        font-size: 16px;
+        font-weight: normal;
+        color: #303133;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 14px;
+            background-color: #4c7ee9;
+            vertical-align: middle;
+            margin: -2px 8px 0 0;
+        }
+    }
+
+    .row {
+        display: table-row;
+        height: 56px;
+
+        & td:nth-child(odd) {
+            background-color: $tableBgColor;
+        }
+
+        .cell {
+            display: table-cell;
+            width: 12.5%;
+            text-align: left;
+            padding-left: 16px;
+            border: 1px solid $borderColor;
+
+            .btn {
+                font-size: 14px;
+            }
+        }
+        .red-cell {
+            color: #ff6555
+        }
+        .blod-cell {
+            font-weight: bold;
+        }
+    }
+    .error-msg {
+        color: #ff6555;
+    }
+}

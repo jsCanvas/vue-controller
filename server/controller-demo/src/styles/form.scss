@@ -1,0 +1,63 @@
+#app{
+	.el-form-item{
+		.el-form-item__label{
+			color: $colorNormal;
+			font-weight: normal;
+			text-align: left;
+		}
+		.el-input__inner{
+		    border: 1px solid $mainBorder;
+		}
+		.el-radio__inner{
+		    border: 1px solid $mainBorder;
+		}
+		.el-checkbox-group{
+		    .el-checkbox__input.is-checked{
+		         .el-checkbox__inner{
+		              background-color: #4C7EE9;
+		              border-color: #4C7EE9;
+		         }
+		         &+.el-checkbox__label{
+		             color: #4C7EE9;
+		         }
+		    }
+	    }
+		.el-radio__input{
+		    &.is-checked{
+		        .el-radio__inner{
+		            border-color: #4C7EE9;
+		            background: #4C7EE9;
+		        }
+		        +.el-radio__label{
+		            color: #606266;
+		        }
+		    }
+		}
+    }
+    .el-form-item.is-error{
+        .el-input__inner{
+            border-color: #F56C6C;
+        }
+
+    }
+}
+body{
+	.el-select-dropdown{
+        .el-select-dropdown__wrap{
+            .el-select-dropdown__item{
+                &:hover{
+                    background: #F2F6FC;
+                }
+                &.selected{
+                    color: #4C7EE9;
+                }
+            }
+        }
+	}
+	.el-date-editor .el-range-separator {
+		width: 10%;
+	}
+	.el-range-editor--small .el-range-separator {
+		line-height: 27px;
+	}
+}

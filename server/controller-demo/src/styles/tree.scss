@@ -1,0 +1,13 @@
+#app{
+	.el-tree{
+		color: $colorNormal !important;
+		.el-tree--highlight-current{
+			background-color: #F2F6FC;
+		}
+		.el-tree-node__content{
+			&:hover{
+				background-color: #F2F6FC !important;
+			}
+		}
+	}
+}

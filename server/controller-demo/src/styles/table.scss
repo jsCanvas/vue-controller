@@ -1,0 +1,66 @@
+#app{
+	.el-table{
+	    &.self-define-table-cls{
+	        .cell{
+	             white-space: inherit;
+                 word-break: inherit;
+                 text-overflow: unset;
+	        }
+	        .el-table__body-wrapper{
+	             .cell{
+	                 white-space: nowrap;
+	                 text-overflow: ellipsis;
+	             }
+	        }
+	    }
+	    .el-table__header{
+	        tr{
+	            th{
+	                background-color: #F2F6FC;
+	                &.is-leaf {
+	                    border-bottom: none;
+	                }
+	            }
+            }
+	    	.cell{
+	    		 color: $colorNormal;
+	    		 font-weight: normal;
+	    		 font-size: 14px;
+	    	}
+	    }
+	    tr{
+	        &.hover-row{
+	            background-color: #F2F6FC !important;
+	            td{
+	                 background-color: #F2F6FC !important;
+	            }
+	        }
+	    }
+	    .el-table__empty-text{
+	        color: $colorSec;
+	    }
+	}
+	.summary-table.el-table {
+		padding-bottom: 1px;
+
+		.el-table__header .cell {
+			color: #303133;
+			font-weight: 600;
+			font-size: 12px;
+		}
+		.el-table__body-wrapper.is-scrolling-left table {
+			padding-bottom: 40px;
+		}
+		.el-table__body-wrapper.is-scrolling-right table{
+			padding-bottom: 40px;
+		}
+		.el-table__body-wrapper.is-scrolling-middle table{
+			padding-bottom: 40px;
+		}
+		.el-table__footer-wrapper {
+			position: absolute;
+			z-index: 2;
+			margin-top: -49px;
+		}
+	}
+}

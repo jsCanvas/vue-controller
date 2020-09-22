@@ -1,0 +1,81 @@
+#app{
+	.el-tabs{
+        &.el-tabs--card{
+            .el-tabs__header{
+                border-bottom: 1px solid #E4E7ED !important;
+                .el-tabs__nav{
+                    border: 1px solid #E4E7ED !important;
+                    border-bottom: none !important;
+                }
+                .el-tabs__item{
+                    height: 32px;
+                    line-height: 32px;
+                    padding: 0 15px;
+                    margin-right: 4px;
+                }
+            }
+            .el-tabs__content{
+                padding-top: 20px;
+            }
+        }
+        &.self-defined-css1{
+            .el-tabs__header{
+                padding-left: 16px;
+                .el-tabs__nav{
+                    border: none !important;
+                    .el-tabs__item{
+                        border: 1px solid #E4E7ED;
+                        border-radius: 4px 4px 0px 0px;
+                        &.is-active{
+                            border-bottom: 1px solid #fff;
+                        }
+                    }
+                    &:first-child{
+                        border-left: 1px solid #E4E7ED !important;
+                    }
+                }
+                
+            }
+            .el-tabs__content{
+                padding-top: 0px;
+            }
+        }
+        &.small-tab-container{
+            .el-tabs__item{
+                height: 30px;
+                line-height: 30px;
+            }
+            .el-tabs__active-bar{
+                height: 3px;
+                z-index: 3;
+                bottom: 0px;
+            }
+        }
+        .el-tabs__nav-wrap{
+            &:after{
+                height: 1px;
+            }
+        }
+	    .el-tabs__nav{
+            .el-tabs__active-bar{
+                background-color: #4C7EE9;
+            }
+            .is-active{
+                color: $colorBtn !important;
+            }
+            .el-tabs__item{
+                &:first-child{
+                    border-left: none !important;
+                }
+            }
+            .el-icon-close{
+                &:hover{
+                    background-color:$colorHoverBtn !important;
+                }
+            }
+            &:hover{
+                color: #5f9df7 !important;
+            }
+        }
+	}
+}

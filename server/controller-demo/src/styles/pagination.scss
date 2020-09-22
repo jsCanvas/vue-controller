@@ -1,0 +1,17 @@
+#app{
+	.el-pagination{
+	    .btn-prev,.btn-next{
+	         background-color: transparent;
+	    }
+	    .el-pager{
+	        li{
+	             background-color: transparent;
+	             color: $secondBorder;
+	             font-size: 12px;
+	             &.active{
+	                 color: #333;
+	             }
+	        }
+	    }
+    }
+}

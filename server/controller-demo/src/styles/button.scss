@@ -1,0 +1,73 @@
+body{
+	.el-button--primary{
+	    background-color: $primaryBtn;
+	    border-color: $primaryBtn;
+	    &:hover{
+	    	background-color: $primaryHoverBtn;
+	        border-color: $primaryHoverBtn;
+	    }
+	    &:active,&:focus{
+	    	background-color: $primaryBtn;
+	        border-color: $primaryBtn;
+	    }
+	    &.is-plain{
+	        background: #fff;
+	        color: #4C7EE9;
+	        border: 1px solid #4C7EE9;
+	    }
+	}
+	.el-button{
+        &.is-disabled{
+            color: #C0C4CC !important;
+            border: 1px solid #C0C4CC !important;
+            background: #fff !important;
+        }
+    }
+	.el-button--default{
+	    &.is-plain{
+	        color: #666;
+	        border: 1px solid #DDDFE6;
+	        &:hover{
+	            color: #4C7EE9;
+	            border: 1px solid #4C7EE9;
+	        }
+	    }
+	}
+	.el-button--primary{
+	    &.is-plain{
+	        &:hover{
+	            background: #fff;
+	            color: #5f9df7;
+	            border-color: #5f9df7;
+	        }
+	    }
+	}
+	.el-button--success{
+	    &.is-plain{
+	        background: #fff;
+	        color: #3BC602;
+	        border: 1px solid #3BC602;
+	    }
+	}
+	.el-button--info{
+	    &.is-plain{
+	        background: #fff;
+	        color: #606266;
+	        border: 1px solid #606266;
+	    }
+	}
+	.el-button--warning{
+	    &.is-plain{
+	        background: #fff;
+	        color: #E6A23C;
+	        border: 1px solid #E6A23C;
+	    }
+	}
+	.el-button--danger{
+	    &.is-plain{
+	        background: #fff;
+	        color: #FF6555;
+	        border: 1px solid #FF6555;
+	    }
+	}
+}
