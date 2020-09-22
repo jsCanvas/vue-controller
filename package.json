@@ -1,6 +1,6 @@
 {
   "name": "vue-controller",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "基于vuex的VUE项目自动化管理开发工具",
   "author": "bitao.ren",
   "private": false,
@@ -27,6 +27,7 @@
   "devDependencies": {
     "css-loader": "^4.3.0",
     "element-ui": "^2.13.2",
+    "inquirer": "^7.3.0",
     "less": "^3.12.2",
     "less-loader": "^5.0.0",
     "monaco-editor": "^0.20.0",
