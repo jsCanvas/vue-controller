@@ -1,22 +1,23 @@
-# xianyun
+# 基于vuex的vue项目自动化构建管理工具
 
-> My supreme Nuxt.js project
+## 安装
 
-## Build Setup
+> npm install -g vue-controller
+
+## 使用
 
 ``` bash
-# install dependencies
-$ npm run install
+# 若还没有vue项目，则使用以下命令构建项目
+$ vue-controller init <app-name>
 
-# serve with hot reload at localhost:3000
+# 进入vue <app-name> 项目根目录下
+$ cd <app-name>
+$ npm install
 $ npm run dev
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+# 添加api数据源接口
+$ vue-controller api /api/url
 
-# generate static project
-$ npm run generate
+# 添加页面page
+$ vue-controller page page-path
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
