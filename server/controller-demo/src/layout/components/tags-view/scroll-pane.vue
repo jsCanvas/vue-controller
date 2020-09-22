@@ -191,11 +191,9 @@ export default {
     .el-scrollbar__view{
         background: #EDEFF4;
     }
-    /deep/ {
-      .el-scrollbar__bar {
+    ::v-deep .el-scrollbar__bar {
         bottom: 0px;
           height:0;
       }
-    }
 }
 </style>
