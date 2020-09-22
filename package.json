@@ -1,6 +1,6 @@
 {
   "name": "vue-controller",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "基于vuex的VUE项目自动化管理开发工具",
   "author": "bitao.ren",
   "private": false,
@@ -33,6 +33,10 @@
     "monaco-editor-webpack-plugin": "^1.9.0",
     "style-loader": "^1.2.1",
     "vue-monaco-editor": "0.0.19"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jsCanvas/vue-controller.git"
   },
   "main": "nuxt.config.js",
   "license": "ISC"
