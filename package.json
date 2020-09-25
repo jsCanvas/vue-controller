@@ -1,6 +1,6 @@
 {
   "name": "vue-controller",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "基于vuex的VUE项目自动化管理开发工具",
   "author": "bitao.ren",
   "private": false,

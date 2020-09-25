@@ -19,6 +19,9 @@ $ npm run dev
 # 添加api数据源接口
 $ vue-controller api /api/url
 
+# 添加mock数据架构 及 mock数据
+$ vue-controller mock /api/url
+
 # 添加页面page
 $ vue-controller page page-path
 ```
@@ -39,6 +42,9 @@ $ npm run dev
 
 # 添加api数据源接口
 $ ./node_modules/.bin/vue-controller api /api/url
+
+# 添加mock数据架构及数据
+$ ./node_modules/.bin/vue-controller mock /api/url
 
 # 添加页面page
 $ ./node_modules/.bin/vue-controller page page-path
