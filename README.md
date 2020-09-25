@@ -1,27 +1,6 @@
 # 基于vuex的vue项目自动化构建管理工具
 
 
-## vue根目录-安装
-
-### 进入vue 项目根目录下
-
-> npm install vue-controller -S
-
-## 使用
-
-``` bash
-# 进入vue 项目根目录下
-$ npm install
-$ npm run dev
-
-# 添加api数据源接口
-$ ./node_modules/.bin/vue-controller api /api/url
-
-# 添加页面page
-$ ./node_modules/.bin/vue-controller page page-path
-```
-
-
 ## 全局使用-安装
 
 > npm install -g vue-controller
@@ -42,4 +21,25 @@ $ vue-controller api /api/url
 
 # 添加页面page
 $ vue-controller page page-path
+```
+
+
+## vue根目录-安装
+
+### 进入vue 项目根目录下
+
+> npm install vue-controller -S
+
+## 使用
+
+``` bash
+# 进入vue 项目根目录下
+$ npm install
+$ npm run dev
+
+# 添加api数据源接口
+$ ./node_modules/.bin/vue-controller api /api/url
+
+# 添加页面page
+$ ./node_modules/.bin/vue-controller page page-path
 ```

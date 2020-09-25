@@ -10,7 +10,6 @@ const cwd = process.cwd();
 const path = require('path');
 const init = require('./init');
 const pages = require('./page');
-const mockapi = require('./mock');
 const mkreduce = require('./mkdirs');
 let thisapimodel = '';
 let thisdiaoyong = '';
@@ -156,7 +155,7 @@ program
 //         });
 // });
 
-async function api(apiUrl){
+async function mockapi(apiUrl){
     const  answers  = await askapi();
         console.log(apiUrl);
         console.log(answers.name);
@@ -177,7 +176,7 @@ thisapiurl = apiurl;
 function wirtestapi(mudu,sta){
     var writerStream = null;
     if(mudu=='api'){
-        writerStream = fs.createWriteStream(`./src/${mudu}/modules/${models}/index.js`);
+        writerStream = fs.createWriteStream(`./mock/modules/${models}/index.js`);
     }else{
         writerStream = fs.createWriteStream(`./src/${mudu}/modules/${models}.js`);
     }
@@ -189,7 +188,50 @@ function wirtestapi(mudu,sta){
     writerStream.on('finish',function(){
         // res.send('hello mocks!');
         if(mudu=='api'){
-            apistore();
+        // apistore();
+        // res.send('hello mocks!');
+                
+        console.log('mock写入完成');
+        console.log(`-----------------SUCCESS---------------------
+        
+        '${thisapiurl}'mock数据写入完成；
+        请在vue.config/webpack 如下配置使用：
+        devServer: {
+                    proxy: {
+                        '/openapi': {
+                            // target: "http://$-{OPENAPI_PROXY_SERVER_HOST}/", // 接口的域名
+                            target: "http://127.0.0.1:$-{port}/mock"
+                            changeOrigin: true,
+                            onProxyReq(proxyReq, req, res) {
+                                proxyReq.setHeader('x-forwarded-host', OPENAPI_PROXY_SERVER_HOST)
+                            },
+                            // target: 'http://127.0.0.1:80',
+                            bypass: function(req, res, proxyOptions) {
+                              // 需要走代理的 mock api 列表(可以只包含前面一部分--表示某一个模块的api全部都需要mock)
+                              const mockUrls = [ 
+                                /*
+                                '/contract/fix/findPage',
+                                '/file/task/download/findPage',
+                                '/contract/fix/download/findPage',
+                                '/file/task/download',
+                                '/contract/fix/downloadBatch',
+                                */
+                              ];
+                              const matchedMockUrl = mockUrls.find(mockUrl => req.originalUrl.match("$-{process.env.VUE_APP_BASE_API}$-{mockUrl}"));
+                              // 请求的 url 为 mock api，跳过代理，返回mock api的地址
+                              if (matchedMockUrl) {
+                                console.log('matchedMockUrl: ', matchedMockUrl);
+                                return req.originalUrl.replace('/openapi', '/mock'); 
+                              }
+                            },
+                            pathRewrite: {
+                              ['^' + '/openapi']: ''
+                            }
+                        },
+                        after: require('./mock/mock-server.js')
+                }
+        
+        --------------------------------------------------------------------`);
         }else if(mudu=='store'){
             apigetter();
         }
@@ -202,24 +244,21 @@ function wirtestapi(mudu,sta){
     })
 }
 try{
-  await mkreduce(`./src/api/modules/`);
-  await mkreduce(`./src/router/modules/`);
-  await mkreduce(`./src/store/modules/`);
+  await mkreduce(`./mock/`);
+  await mkreduce(`./mock/modules/`);
   const { COPYFILE_EXCL } = fs.constants;
 
  // 通过使用 COPYFILE_EXCL，如果目标文件存在，则操作将失败。
- let copySrc = path.join( __dirname, '.',  'controller-demo','src','api','controller-common.js');
- let copySrcrou = path.join( __dirname, '.',  'controller-demo','src','router','generate-routes.js');
- let copySrcmap = path.join( __dirname, '.',  'controller-demo','src','router','router-map.js');
- fs.copyFileSync(copySrc, './src/api/controller-common.js', COPYFILE_EXCL);
- fs.copyFileSync(copySrcrou, './src/router/generate-routes.js', COPYFILE_EXCL);
- fs.copyFileSync(copySrcmap, './src/router/router-map.js', COPYFILE_EXCL);
+ let copySrc = path.join( __dirname, '.',  'controller-demo','mock','index.js');
+ let copySrcrou = path.join( __dirname, '.',  'controller-demo','mock','mock-server.js');
+ fs.copyFileSync(copySrc, './mock/index.js', COPYFILE_EXCL);
+ fs.copyFileSync(copySrcrou, './mock/mock-server.js', COPYFILE_EXCL);
 }catch(e){};
-if (fs.existsSync(`./src/api/modules/${models}`)) {
+if (fs.existsSync(`./mock/modules/${models}`)) {
     console.log('api该路径已存在');
 }else{
     console.log('api该路径不存在');
-    fs.mkdir(`./src/api/modules/${models}`,function(){
+    fs.mkdir(`./mock/modules/${models}`,function(){
         let apistr = `export default [
 {
     url: '${apiurl}',
@@ -247,7 +286,7 @@ if (fs.existsSync(`./src/api/modules/${models}`)) {
     
     return;
 }
-var readStream=fs.createReadStream(`./src/api/modules/${models}/index.js`);
+var readStream=fs.createReadStream(`./mock/modules/${models}/index.js`);
 
 var str='';/*保存数据*/
 var count=0;  /*次数*/
@@ -293,229 +332,6 @@ readStream.on('error',function(err){
     console.log(err);
 
 });
-
-/**
- * 写入store
- */
-function apistore(){
-    let apirr = apiurl.split('/');
-    let star1 = apirr[apirr.length-2];
-    let star2 = apirr[apirr.length-1];
-
-    thisdiaoyong = apitype+star1.slice(0,1).toUpperCase()+star1.slice(1)+star2.slice(0,1).toUpperCase()+star2.slice(1);
-    thisshujucangku = star1+star2.slice(0,1).toUpperCase()+star2.slice(1);
-
-
-    if (fs.existsSync(`./src/store/modules/${models}.js`)) {
-        console.log('store该路径已存在');
-    }else{
-        // models .toUpperCase( )
-        // apiurl .tolocaleLowerCase( )   
-        let storestr = `import {commonRequest} from '@/api/controller-common'
-import {Message} from 'element-ui'
-function cleanArray(actual) {
-const newArray = []
-for (let i = 0; i < actual.length; i++) {
-    if (actual[i]) {
-    newArray.push(actual[i])
-    }
-}
-return newArray
-}
-
-function param(json) {
-if (!json) return ''
-return cleanArray(Object.keys(json).map(key => {
-    if (json[key] === undefined) return ''
-    return encodeURIComponent(key) + '=' +
-            encodeURIComponent(json[key])
-})).join('&')
-}
-
-const state = {
-/**
- * 规则 api路径最后两段驼峰
- * 例如接口 /member/list   type：get
- * memberList
- */
-${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)}:[],
-}
-
-const mutations = {
-/**
- * 规则 接口类型type _ api路径最后两段驼峰
- * 例如接口 /member/list   type：get
- * GET_MEMBERLIST
- */
-${apitype.toUpperCase()}_${star1.toUpperCase()+star2.toUpperCase()}:(state,data)=>{
-    state.${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)} = data;
-},
-}
-
-
-const actions = {
-/**
- * 规则 接口类型type + api路径最后两段驼峰
- * 例如接口 /member/list   type：get
- * getMemberList
- */
-${apitype+star1.slice(0,1).toUpperCase()+star1.slice(1)+star2.slice(0,1).toUpperCase()+star2.slice(1)}({ commit, state },data) {
-    return new Promise((resolve, reject) => {
-    commonRequest('${apitype=="post"?apiurl+"'":apiurl+"?'"+"param(data)"},'${apitype}',data).then(response => {
-        const { datas } = response;
-        if(datas){
-            commit('${apitype.toUpperCase()}_${star1.toUpperCase()+star2.toUpperCase()}',datas);
-        }else{
-            Message.error(response.message)
-        }
-        resolve(null)
-    }).catch(error => {
-        Message.error('服务出差啦~稍后再试/刷新页面')
-        reject(error)
-    })
-        
-    })
-},
-}
-
-
-export default {
-namespaced: true,
-state,
-mutations,
-actions
-}`
-        wirtestapi('store',storestr);
-        return;
-}
-
-let readStream=fs.createReadStream(`./src/store/modules/${models}.js`);
-
-let str='';/*保存数据*/
-let count=0;  /*次数*/
-readStream.on('data',function(chunk){
-    str+=chunk;
-    count++;
-
-})
-
-//读取完成
-readStream.on('end',function(chunk){
-    // console.log(count);
-    // console.log(str);
-    let storelistStr = '';
-    let storeone = str.split('const state = ')[0];
-    let storestwo = str.split('const state = ')[1];
-    let storetate = storestwo.split('const mutations = ')[0];
-    let stores3 = storestwo.split('const mutations = ')[1];
-    let storemutation = stores3.split('const actions = ')[0];
-    let stores4 = stores3.split('const actions = ')[1];
-    let storeactions = stores4.split('export default ')[0];
-    let stores5 = stores4.split('export default ')[1];
-    storelistStr = storeone.indexOf('{commonRequest}') ==-1?`import {commonRequest} from '@/api/controller-common'
-    `:''+storeone
-    + 'const state = '+storetate.slice(0,storetate.lastIndexOf('}')) + haveDou(storetate.slice(0,storetate.lastIndexOf('}')))
-    +`    ${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)}:[],
-}
-const mutations = `+ storemutation.slice(0,storemutation.lastIndexOf('}'))+ haveDou(storemutation.slice(0,storemutation.lastIndexOf('}')))
-    +`    ${apitype.toUpperCase()}_${star1.toUpperCase()+star2.toUpperCase()}:(state,data)=>{
-    state.${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)} = data;
-},
-}
-const actions = `+ storeactions.slice(0,storeactions.lastIndexOf('}')) + haveDou(storeactions.slice(0,storeactions.lastIndexOf('}')))
-    + `    ${apitype+star1.slice(0,1).toUpperCase()+star1.slice(1)+star2.slice(0,1).toUpperCase()+star2.slice(1)}({ commit, state },data) {
-    return new Promise((resolve, reject) => {
-    commonRequest('${apitype=="post"?apiurl+"'":apiurl+"?'"+"param(data)"},'${apitype}',data).then(response => {
-        const { datas } = response;
-        if(datas){
-            commit('${apitype.toUpperCase()}_${star1.toUpperCase()+star2.toUpperCase()}',datas);
-        }else{
-            Message.error(response.message)
-        }
-        resolve(null)
-    }).catch(error => {
-        Message.error('服务出差啦~稍后再试/刷新页面')
-        reject(error)
-    })
-        
-    })
-},
-}
-export default `+stores5;
-    wirtestapi('store',storelistStr);
-    // res.send(apilist.mock);
-})
-
-
-//读取失败
-readStream.on('error',function(err){
-    console.log(err);
-
-});
-
-};
-
-/**
- * 写入getter
- */
-function apigetter(){
-    let apirr = apiurl.split('/');
-    let star1 = apirr[apirr.length-2];
-    let star2 = apirr[apirr.length-1];
-    let readStream=fs.createReadStream(`./src/store/getters.js`);
-
-    let str='';/*保存数据*/
-    let count=0;  /*次数*/
-    readStream.on('data',function(chunk){
-        str+=chunk;
-        count++;
-
-    })
-
-    //读取完成
-    readStream.on('end',function(chunk){
-        // console.log(count);
-        // console.log(str); userOrderList: state => state.member.userOrderList,
-        let getters1 = str.split('export default ')[0];
-        let getters2 = str.split('export default ')[1];
-        let getterstr = getters1.slice(0,getters1.lastIndexOf('}')) + haveDou(getters1.slice(0,getters1.lastIndexOf('}')))
-        +`    ${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)}: state => state.${models}.${star1+star2.slice(0,1).toUpperCase()+star2.slice(1)},            
-}
-export default `+getters2;
-    let writerStream = fs.createWriteStream(`./src/store/getters.js`);
-    writerStream.write(getterstr,'utf8');
-
-    //标记写入完成
-    writerStream.end();
-
-    writerStream.on('finish',function(){
-        // res.send('hello mocks!');
-        
-        console.log('getterstr写入完成');
-        console.log(`-----------------SUCCESS---------------------
-        
-        '${thisapiurl}'接口写入完成；
-        页面调用接口方法：this.$store.dispatch('${thisapimodel}/${thisdiaoyong}',params).then(res=>{...})
-        页面使用数据仓库：...mapGetters(['${thisshujucangku}'])
-
---------------------------------------------------------------------`);
-    })
-
-    //失败
-    writerStream.on('error',function(){
-        // res.send('hello mocks!');
-        console.log('getterstr写入失败');
-    })
-    })
-
-
-    //读取失败
-    readStream.on('error',function(err){
-        console.log(err);
-
-    })
-}
-}
 
 function askapi(){
     let askobj = {};
@@ -572,43 +388,6 @@ function askapi(){
     })
     
 }
-
-registeCommand('api <api-url>', 'description: 添加Api', {}, (apiUrl)=>{
-    // require('../commands/init')(appName);
-    api(apiUrl)
-    
-});    
-
-registeCommand('mock <api-url>', 'description: 添加Mock', {}, (apiUrl)=>{
-    // require('../commands/init')(appName);
-    mockapi(apiUrl)
-    
-});    
-
-registeCommand('init <app-name>', 'description: 添加项目', {}, (appName)=>{
-    // require('../commands/init')(appName);
-    init(appName)
-    
-}); 
-
-
-registeCommand('page <page-url>', 'description: 添加Api', {}, (pageUrl)=>{
-    // require('../commands/init')(appName);
-    pages(pageUrl)
-    
-});    
-
-
-
-program
-    .arguments('<command>')
-    .action(()=>{
-        // eslint-disable-next-line
-        console.log(chalk.yellow('无效 vue-controller命令'));
-        program.outputHelp();
-    });
-
-program.parse(process.argv);
-if (!process.argv.slice(2).length) {
-    program.outputHelp();
 }
+
+module.exports = mockapi;
